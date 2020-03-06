@@ -21,7 +21,7 @@ CREATE TABLE Questions
 CREATE TABLE Answers
 (
 	Id INT IDENTITY(1,1) PRIMARY KEY,
-	Question VARCHAR(255) NOT NULL,
+	Answer VARCHAR(255) NOT NULL,
 	IsCorrect BIT NOT NULL,
 
 	-- One to many relationship with Questions
@@ -41,3 +41,7 @@ CREATE TABLE Quizes_Tags
 	TagId INT NOT NULL FOREIGN KEY REFERENCES Answers(Id),
 	PRIMARY KEY (QuizId, TagId)
 );
+
+DROP TABLE Quizes_Tags;
+DROP TABLE Tag;
+DROP TABLE Answers;

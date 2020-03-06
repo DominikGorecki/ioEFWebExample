@@ -1,3 +1,5 @@
+CREATE DATABASE QuizesExample;
+
 USE QuizesExample;
 
 CREATE TABLE Quizes 
@@ -5,7 +7,6 @@ CREATE TABLE Quizes
 	Id INT IDENTITY(1,1) PRIMARY KEY,
 	Title VARCHAR(100) NOT NULL
 );
-
 
 CREATE TABLE Questions
 (

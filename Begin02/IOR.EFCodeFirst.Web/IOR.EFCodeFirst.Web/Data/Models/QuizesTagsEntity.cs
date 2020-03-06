@@ -7,5 +7,7 @@ namespace IOR.EFCodeFirst.Web.Data.Models
 {
     public class QuizesTagsEntity
     {
+        public int QuizId { get; set; }
+        public int TagId { get; set; }
     }
 }

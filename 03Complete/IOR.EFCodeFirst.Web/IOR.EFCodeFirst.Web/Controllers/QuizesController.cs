@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IOR.EFCodeFirst.Web.Data;
+using IOR.EFCodeFirst.Web.Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,19 @@ namespace IOR.EFCodeFirst.Web.Controllers
         {
             var quizes = await _dbContext.Quizes.ToListAsync();
             return Ok(quizes);
+        }
+
+        [HttpPost]
+        [Route("{title}")]
+        public async Task<IActionResult> PostQuiz(string title)
+        {
+            _dbContext.Quizes.Add(new QuizEntity
+            {
+                Title = title
+            });
+
+            await _dbContext.SaveChangesAsync();
+            return Ok();
         }
     }
 }

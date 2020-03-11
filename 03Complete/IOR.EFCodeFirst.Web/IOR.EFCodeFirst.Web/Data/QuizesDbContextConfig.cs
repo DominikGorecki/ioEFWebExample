@@ -25,6 +25,38 @@ namespace IOR.EFCodeFirst.Web.Data
                 .HasColumnName("Title")
                 .HasMaxLength(100) // varchar(100)
                 .IsRequired(); // not null
+
+            /* Alternative to configuring in Questions 
+            quizBuilder
+                .HasMany<QuestionEntity>(qz => qz.Questions)
+                .WithOne(qst => qst.Quiz)
+                .HasForeignKey(qst => qst.QuizId);
+                */
+        }
+
+        public static void ConfigQuestionsEntity(this ModelBuilder modelBuilder)
+        {
+            var questionsBuilder = modelBuilder.Entity<QuestionEntity>();
+            questionsBuilder.ToTable("Questions");
+            questionsBuilder.HasKey(q => q.Id);
+
+            questionsBuilder.Property(q => q.Question)
+                .HasColumnName("Question")
+                .HasMaxLength(100)
+                .IsRequired();
+
+            questionsBuilder.Property(q => q.QuestionOrder)
+                .HasColumnName("QuestionOrder")
+                .IsRequired();
+
+            questionsBuilder.Property(q => q.QuizId)
+                .HasColumnName("QuizId")
+                .IsRequired();
+
+            questionsBuilder.HasOne(qst => qst.Quiz)
+                .WithMany(quiz => quiz.Questions)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasForeignKey(qst => qst.QuizId);
         }
     }
 }

@@ -9,5 +9,7 @@ namespace IOR.EFCodeFirst.Web.Data.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
+
+        public ICollection<QuestionEntity> Questions { get; set; }
     }
 }

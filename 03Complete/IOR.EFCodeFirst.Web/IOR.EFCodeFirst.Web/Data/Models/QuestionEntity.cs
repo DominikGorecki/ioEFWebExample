@@ -12,5 +12,6 @@ namespace IOR.EFCodeFirst.Web.Data.Models
         public int QuestionOrder { get; set; }
 
         public int QuizId { get; set; }
+        public QuizEntity Quiz { get; set; }
     }
 }

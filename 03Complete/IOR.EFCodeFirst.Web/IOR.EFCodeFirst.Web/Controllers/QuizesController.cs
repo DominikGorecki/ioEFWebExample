@@ -28,6 +28,19 @@ namespace IOR.EFCodeFirst.Web.Controllers
             return Ok(quizes);
         }
 
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetQuiz(int id)
+        {
+            var quiz = await _dbContext
+                .Quizes
+                .Include(qz => qz.Questions)
+                .FirstOrDefaultAsync(qz => qz.Id == id);
+                
+            return Ok(quiz);
+        }
+
         [HttpPost]
         [Route("{title}")]
         public async Task<IActionResult> PostQuiz(string title)
@@ -40,5 +53,25 @@ namespace IOR.EFCodeFirst.Web.Controllers
             await _dbContext.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpPut]
+        [Route("{id}/Question/{question}")]
+        public async Task<IActionResult> PutQuestion(int id, string question)
+        {
+            var quiz = await _dbContext.Quizes.FindAsync(id);
+            if (quiz == null) return BadRequest();
+
+            var newQuestion = new QuestionEntity
+            {
+                Question = question,
+                Quiz = quiz
+            };
+            await _dbContext.Questions.AddAsync(newQuestion);
+
+            await _dbContext.SaveChangesAsync();
+            return Ok();
+        }
+
+
     }
 }

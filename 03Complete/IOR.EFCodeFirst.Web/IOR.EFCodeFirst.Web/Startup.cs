@@ -33,6 +33,10 @@ namespace IOR.EFCodeFirst.Web
                   Configuration.GetConnectionString("DefaultConnection")),
                   ServiceLifetime.Transient);
 
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());

@@ -2,7 +2,7 @@ CREATE DATABASE QuizesExample;
 
 USE QuizesExample;
 
-CREATE TABLE Quizes 
+CREATE TABLE Quizes
 (
 	Id INT IDENTITY(1,1) PRIMARY KEY,
 	Title VARCHAR(100) NOT NULL
@@ -13,9 +13,9 @@ CREATE TABLE Questions
 	Id INT IDENTITY(1,1) PRIMARY KEY,
 	QuestionOrder INT NOT NULL,
 	Question VARCHAR(100) NOT NULL,
-	
+
 	-- One to many relationship with Quizes
-	QuizId INT FOREIGN KEY REFERENCES Quizes(Id)
+	QuizId INT FOREIGN KEY REFERENCES Quizes(Id) NOT NULL
 );
 
 CREATE TABLE Answers
@@ -25,7 +25,7 @@ CREATE TABLE Answers
 	IsCorrect BIT NOT NULL,
 
 	-- One to many relationship with Questions
-	QuestionId INT FOREIGN KEY REFERENCES Questions(Id)
+	QuestionId INT FOREIGN KEY REFERENCES Questions(Id) NOT NULL
 );
 
 CREATE TABLE Tag
@@ -41,7 +41,3 @@ CREATE TABLE Quizes_Tags
 	TagId INT NOT NULL FOREIGN KEY REFERENCES Answers(Id),
 	PRIMARY KEY (QuizId, TagId)
 );
-
-DROP TABLE Quizes_Tags;
-DROP TABLE Tag;
-DROP TABLE Answers;

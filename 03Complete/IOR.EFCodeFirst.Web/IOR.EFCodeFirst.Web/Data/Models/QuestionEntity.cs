@@ -13,5 +13,7 @@ namespace IOR.EFCodeFirst.Web.Data.Models
 
         public int QuizId { get; set; }
         public virtual QuizEntity Quiz { get; set; }
+
+        public virtual ICollection<AnswerEntity> Answers { get; set; }
     }
 }

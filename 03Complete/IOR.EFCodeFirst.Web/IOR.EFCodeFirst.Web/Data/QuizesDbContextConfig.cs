@@ -58,5 +58,30 @@ namespace IOR.EFCodeFirst.Web.Data
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasForeignKey(qst => qst.QuizId);
         }
+
+        public static void ConfigAnswersEntity(this ModelBuilder modelBuilder)
+        {
+            var answersBuilder = modelBuilder.Entity<AnswerEntity>();
+            answersBuilder.ToTable("Answers");
+            answersBuilder.HasKey(a => a.Id);
+
+            answersBuilder.Property(a => a.Answer)
+                .HasColumnName("Answer")
+                .HasMaxLength(255)
+                .IsRequired();
+
+            answersBuilder.Property(a => a.IsCorrect)
+                .HasColumnName("IsCorrect")
+                .IsRequired();
+
+            answersBuilder.Property(a => a.QuestionId)
+                .HasColumnName("QuestionId")
+                .IsRequired();
+
+            answersBuilder.HasOne(a => a.Question)
+                .WithMany(q => q.Answers)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasForeignKey(a => a.QuestionId);
+        }
     }
 }

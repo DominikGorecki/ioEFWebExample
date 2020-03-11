@@ -72,6 +72,36 @@ namespace IOR.EFCodeFirst.Web.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        [Route("Question/{id}/Answer")]
+        public async Task<IActionResult> PutAnswer(int id, AnswerPutModel model)
+        {
+            var questions = await _dbContext.Questions
+                .Include(q => q.Answers)
+                .FirstOrDefaultAsync(q => q.Id == id);
+
+            if (questions == null) return BadRequest();
+            throw new NotImplementedException();
+
+
+            //var newQuestion = new QuestionEntity
+            //{
+            //    Question = question,
+            //    Quiz = quiz
+            //};
+            //await _dbContext.Questions.AddAsync(newQuestion);
+
+            //await _dbContext.SaveChangesAsync();
+            //return Ok();
+        }
+
+        public class AnswerPutModel
+        {
+
+
+        }
+
+
 
     }
 }

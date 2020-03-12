@@ -112,7 +112,6 @@ namespace IOR.EFCodeFirst.Web.Data
                 .WithMany(t => t.QuizTags)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasForeignKey(qt => qt.TagId);
-
         }
     }
 }

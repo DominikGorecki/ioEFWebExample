@@ -36,6 +36,7 @@ namespace IOR.EFCodeFirst.Web.Controllers
             var quiz = await _dbContext
                 .Quizes
                 .Include(qz => qz.Questions)
+                    .ThenInclude(qs => qs.Answers)
                 .FirstOrDefaultAsync(qz => qz.Id == id);
                 
             return Ok(quiz);
@@ -74,31 +75,31 @@ namespace IOR.EFCodeFirst.Web.Controllers
 
         [HttpPut]
         [Route("Question/{id}/Answer")]
-        public async Task<IActionResult> PutAnswer(int id, AnswerPutModel model)
+        public async Task<IActionResult> PutAnswer(int id, [FromBody] AnswerPutModel model)
         {
-            var questions = await _dbContext.Questions
+            var question = await _dbContext.Questions
                 .Include(q => q.Answers)
                 .FirstOrDefaultAsync(q => q.Id == id);
 
-            if (questions == null) return BadRequest();
-            throw new NotImplementedException();
+            if (question == null) return BadRequest();
 
+            var newAnswer = new AnswerEntity
+            {
+                Answer = model.Answer,
+                IsCorrect = model.IsCorrect,
+                Question = question
+            };
 
-            //var newQuestion = new QuestionEntity
-            //{
-            //    Question = question,
-            //    Quiz = quiz
-            //};
-            //await _dbContext.Questions.AddAsync(newQuestion);
+            _dbContext.Answers.Add(newAnswer);
+            await _dbContext.SaveChangesAsync();
 
-            //await _dbContext.SaveChangesAsync();
-            //return Ok();
+            return Ok();
         }
 
         public class AnswerPutModel
         {
-
-
+            public string Answer { get; set; }
+            public bool IsCorrect { get; set; }
         }
 
 

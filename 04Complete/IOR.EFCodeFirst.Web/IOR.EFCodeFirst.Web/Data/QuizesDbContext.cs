@@ -12,6 +12,8 @@ namespace IOR.EFCodeFirst.Web.Data
         public DbSet<QuizEntity> Quizes { get; set; }
         public DbSet<QuestionEntity> Questions { get; set; }
         public DbSet<AnswerEntity> Answers { get; set; }
+        public DbSet<TagEntity> Tags { get; set; }
+        public DbSet<QuizTagEntity> QuizTags { get; set; }
 
         public QuizesDbContext(DbContextOptions options)  : base(options) { }
 
@@ -20,6 +22,8 @@ namespace IOR.EFCodeFirst.Web.Data
             modelBuilder.ConfigQuizEntity();
             modelBuilder.ConfigQuestionsEntity();
             modelBuilder.ConfigAnswersEntity();
+            modelBuilder.ConfigTagEntity();
+            modelBuilder.ConfigQuizTagEntity();
         }
     }
 }

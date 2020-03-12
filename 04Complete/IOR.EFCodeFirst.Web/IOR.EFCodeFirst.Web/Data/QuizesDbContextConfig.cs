@@ -83,5 +83,36 @@ namespace IOR.EFCodeFirst.Web.Data
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasForeignKey(a => a.QuestionId);
         }
+
+        public static void ConfigTagEntity(this ModelBuilder modelBuilder)
+        {
+            var tagBuilder = modelBuilder.Entity<TagEntity>();
+            tagBuilder
+                .ToTable("Tag")
+                .HasKey("Id");
+
+            tagBuilder.Property(t => t.Name)
+                .HasMaxLength(100)
+                .IsRequired();
+        }
+
+        public static void ConfigQuizTagEntity(this ModelBuilder modelBuilder)
+        {
+            var quizTagBuilder = modelBuilder.Entity<QuizTagEntity>();
+            quizTagBuilder
+                .ToTable("Quizes_Tags")
+                .HasKey(qt => new { qt.QuizId, qt.TagId });
+
+            quizTagBuilder.HasOne(qt => qt.Quiz)
+                .WithMany(qz => qz.QuizTags)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasForeignKey(qt => qt.QuizId);
+
+            quizTagBuilder.HasOne(qt => qt.Tag)
+                .WithMany(t => t.QuizTags)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasForeignKey(qt => qt.TagId);
+
+        }
     }
 }

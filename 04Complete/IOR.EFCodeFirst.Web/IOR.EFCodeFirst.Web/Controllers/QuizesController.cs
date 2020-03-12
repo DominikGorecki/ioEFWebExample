@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using IOR.EFCodeFirst.Web.Data;
@@ -99,6 +100,52 @@ namespace IOR.EFCodeFirst.Web.Controllers
         {
             public string Answer { get; set; }
             public bool IsCorrect { get; set; }
+        }
+
+        [HttpPut]
+        [Route("{id}/Tag/{tagId}")]
+        public async Task<IActionResult> PutTagToQuiz(int id, int tagId)
+        {
+            var quiz = await _dbContext.Quizes.FindAsync(id);
+            if (quiz == null) return BadRequest();
+            var tag = await _dbContext.Tags.FindAsync(tagId);
+            if (tag == null) return BadRequest();
+
+            _dbContext.QuizTags
+                .Add(new QuizTagEntity
+                {
+                    Quiz = quiz,
+                    Tag = tag
+                });
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("Tag/{name}")]
+        [ProducesResponseType(typeof(NewTagResponse), 200)]
+        public async Task<IActionResult> PutTag(string name)
+        {
+            var newTag = new TagEntity
+            {
+                Name = name
+            };
+
+            _dbContext.Tags.Add(newTag);
+            await _dbContext.SaveChangesAsync();
+            return Ok(new NewTagResponse
+            {
+                Id = newTag.Id,
+                Name = newTag.Name
+            });
+        }
+
+        public class NewTagResponse
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
         }
     }
 }

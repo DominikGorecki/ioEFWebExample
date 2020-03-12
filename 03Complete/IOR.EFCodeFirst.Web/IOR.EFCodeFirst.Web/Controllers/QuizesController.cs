@@ -28,7 +28,6 @@ namespace IOR.EFCodeFirst.Web.Controllers
             return Ok(quizes);
         }
 
-
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetQuiz(int id)
@@ -101,8 +100,5 @@ namespace IOR.EFCodeFirst.Web.Controllers
             public string Answer { get; set; }
             public bool IsCorrect { get; set; }
         }
-
-
-
     }
 }

@@ -11,5 +11,6 @@ namespace IOR.EFCodeFirst.Web.Data.Models
         public string Title { get; set; }
 
         public virtual ICollection<QuestionEntity> Questions { get; set; }
+        public virtual ICollection<QuizTagEntity> QuizTags { get; set; }
     }
 }

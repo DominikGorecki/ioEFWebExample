@@ -9,5 +9,6 @@ namespace IOR.EFCodeFirst.Web.Data.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public virtual ICollection<QuizTagEntity> QuizTags { get; set; }
     }
 }

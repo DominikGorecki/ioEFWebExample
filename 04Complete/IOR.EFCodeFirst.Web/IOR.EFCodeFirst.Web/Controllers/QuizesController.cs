@@ -23,10 +23,33 @@ namespace IOR.EFCodeFirst.Web.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<QuizWithTags>), 200)]
         public async Task<IActionResult> GetQuizes()
         {
-            var quizes = await _dbContext.Quizes.ToListAsync();
-            return Ok(quizes);
+            var quizes = await _dbContext.Quizes
+                .Include(q => q.QuizTags)
+                    .ThenInclude(qt => qt.Tag)
+                .ToListAsync();
+            var quizesWithTags = quizes
+                .Select(q => QuizWithTags.MapFrom(q))
+                .ToList(); ;
+                
+            return Ok(quizesWithTags);
+        }
+
+        public class QuizWithTags 
+        {
+            public int Id { get; set; }
+            public string Title { get; set; }
+            public IEnumerable<string> Tags { get; set; }
+
+            internal static QuizWithTags MapFrom(QuizEntity quiz)
+                => new QuizWithTags
+                {
+                    Id = quiz.Id,
+                    Title = quiz.Title,
+                    Tags = quiz.QuizTags.Select(qt => qt.Tag.Name)
+                };
         }
 
         [HttpGet]
@@ -103,27 +126,6 @@ namespace IOR.EFCodeFirst.Web.Controllers
         }
 
         [HttpPut]
-        [Route("{id}/Tag/{tagId}")]
-        public async Task<IActionResult> PutTagToQuiz(int id, int tagId)
-        {
-            var quiz = await _dbContext.Quizes.FindAsync(id);
-            if (quiz == null) return BadRequest();
-            var tag = await _dbContext.Tags.FindAsync(tagId);
-            if (tag == null) return BadRequest();
-
-            _dbContext.QuizTags
-                .Add(new QuizTagEntity
-                {
-                    Quiz = quiz,
-                    Tag = tag
-                });
-
-            await _dbContext.SaveChangesAsync();
-
-            return Ok();
-        }
-
-        [HttpPut]
         [Route("Tag/{name}")]
         [ProducesResponseType(typeof(NewTagResponse), 200)]
         public async Task<IActionResult> PutTag(string name)
@@ -141,11 +143,30 @@ namespace IOR.EFCodeFirst.Web.Controllers
                 Name = newTag.Name
             });
         }
-
         public class NewTagResponse
         {
             public int Id { get; set; }
             public string Name { get; set; }
+        }
+
+        [HttpPut]
+        [Route("{id}/Tag/{tagId}")]
+        public async Task<IActionResult> PutTagToQuiz(int id, int tagId)
+        {
+            var quiz = await _dbContext.Quizes.FindAsync(id);
+            if (quiz == null) return BadRequest();
+            var tag = await _dbContext.Tags.FindAsync(tagId);
+            if (tag == null) return BadRequest();
+
+            _dbContext.QuizTags
+                .Add(new QuizTagEntity
+                {
+                    Quiz = quiz,
+                    Tag = tag
+                });
+
+            await _dbContext.SaveChangesAsync();
+            return Ok();
         }
     }
 }

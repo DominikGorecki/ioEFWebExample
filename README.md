@@ -1,5 +1,7 @@
 # ioEFWebExample - Entity Framework Recipe Example
 
+[![code examples](https://iorecipes.com/c/ef-core-4-part-example/repo-badge)](https://iorecipes.com/c/ef-core-4-part-example)
+
 This is the code repository for a four part recipe to learn about Entity Framework core. 
 
 Here are the recipes: [Part 1][p1] | [Part 2][p2] | [Part 3][p3] | [Part 4][p4]

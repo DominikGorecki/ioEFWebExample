@@ -1,4 +1,4 @@
-# ioEFWebExample - Entity Framework Recipe Example
+#Entity Framework Core 4 Part Turorial
 
 [![code examples](https://iorecipes.com/c/ef-core-4-part-example/repo-badge#a)](https://iorecipes.com/c/ef-core-4-part-example)
 
